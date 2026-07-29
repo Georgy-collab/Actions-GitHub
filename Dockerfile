@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY main.py .
 
 # Порт, на котором слушает uvicorn
-EXPOSE 8000
+EXPOSE 8002
 
 # Запуск FastAPI через uvicorn (доступен снаружи по 0.0.0.0)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8002"]

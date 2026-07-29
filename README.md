@@ -15,10 +15,10 @@ pip install -r requirements.txt
 ## Запуск
 
 ```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uvicorn main:app --reload --host 0.0.0.0 --port 8002
 ```
 
-Сервер будет доступен по адресу: http://127.0.0.1:8000
+Сервер будет доступен по адресу: http://127.0.0.1:8002
 
 ## Docker
 
@@ -36,7 +36,7 @@ docker build -t time-api .
 docker run -p 8000:8000 time-api
 ```
 
-После запуска API доступен по адресам: http://127.0.0.1:8000, `/time` и `/date`
+После запуска API доступен по адресам: http://127.0.0.1:8002, `/time` и `/date`
 
 ## Эндпоинты
 
@@ -73,5 +73,5 @@ docker run -p 8000:8000 time-api
 
 После запуска доступна интерактивная документация:
 
-- Swagger UI: http://127.0.0.1:8000/docs
-- ReDoc: http://127.0.0.1:8000/redoc
+- Swagger UI: http://127.0.0.1:8002/docs
+- ReDoc: http://127.0.0.1:8002/redoc
