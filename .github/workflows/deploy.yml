@@ -51,16 +51,15 @@ jobs:
 
   # ---------------------------------------------------------------------------
   # Job 2: по SSH на сервер — pull из GHCR и запуск контейнера
-  # Нужные секреты репозитория:
-  #   SSH_HOST         — IP или хост сервера
-  #   SSH_USER         — пользователь SSH
-  #   SSH_PRIVATE_KEY  — приватный ключ (содержимое .pem / id_rsa)
-  #   SSH_PORT         — порт SSH (обычно 22)
-  #   GHCR_TOKEN       — PAT с правом read:packages (для docker login на сервере)
+  # Секреты: SSH_HOST, SSH_USER, SSH_PRIVATE_KEY, SSH_PORT (опционально)
+  # GHCR_TOKEN не нужен — используем встроенный GITHUB_TOKEN
   # ---------------------------------------------------------------------------
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
 
     steps:
       - name: Deploy over SSH
@@ -68,12 +67,13 @@ jobs:
         env:
           IMAGE: ${{ needs.build-and-push.outputs.image }}
           GHCR_USER: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          # Встроенный токен Actions — отдельный PAT не нужен
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          port: ${{ secrets.SSH_PORT || 22 }}
           envs: IMAGE,GHCR_USER,GHCR_TOKEN
           script: |
             set -e
@@ -88,7 +88,7 @@ jobs:
             docker run -d \
               --name time-api \
               --restart unless-stopped \
-              -p 8000:8000 \
+              -p 8002:8002 \
               "$IMAGE:latest"
 
             docker logout ghcr.io
