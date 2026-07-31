@@ -33,7 +33,7 @@ docker build -t time-api .
 **Запуск контейнера:**
 
 ```bash
-docker run -p 8000:8000 time-api
+docker run -p 8002:8002 time-api
 ```
 
 После запуска API доступен по адресам: http://127.0.0.1:8002, `/time` и `/date`
